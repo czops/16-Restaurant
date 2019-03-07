@@ -6,12 +6,16 @@ var path = require("path");
 //define here to avoid scope issues
 var customers = [
     {
-    name: "obiwankenobi",
-    phone: "Jedi Master",
-    email: "Obi Wan Kenobi",
-    uniqueID: 55
+        name: "obiwankenobi",
+        phone: "Jedi Master",
+        email: "Obi Wan Kenobi",
+        uniqueID: 55
 
-  },
+    },
+];
+
+var waitlist = [
+
 ];
 
 module.exports = function (app) {
@@ -28,7 +32,7 @@ module.exports = function (app) {
     });
 
     app.get("/api/waitlist", function (req, res) {
-        return res.json(customers);
+        return res.json(waitlist);
     });
 
 
@@ -36,17 +40,27 @@ module.exports = function (app) {
     app.post("/api/customers", function (req, res) {
         // req.body hosts is equal to the JSON post sent from the user
         // This works because of our body parsing middleware
-        var newCustomer= req.body;
+        var newCustomer = req.body;
 
-        // Using a RegEx Pattern to remove spaces from newCharacter
-        // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-        // newCustomer.routeName = newCustomer.name.replace(/\s+/g, "").toLowerCase();
+        if (customers.length < 5) {
+            // Using a RegEx Pattern to remove spaces from newCharacter
+            // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+            // newCustomer.routeName = newCustomer.name.replace(/\s+/g, "").toLowerCase();
 
-        console.log(newCustomer);
+            console.log(newCustomer.name + "is seated at a table.");
 
-        customers.push(newCustomer);
+            customers.push(newCustomer);
 
-        res.json(newCustomer);
+            res.json(newCustomer);
+
+        } else if (customers.length > 4) {
+            console.log(newCustomer.name + "is on the waitlist");
+
+            waitlist.push(newCustomer);
+
+            res.json(newCustomer);
+        }
+
     });
 
 };
